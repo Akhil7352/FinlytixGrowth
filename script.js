@@ -1,61 +1,115 @@
-// Mobile Navigation Toggle
-const hamburger = document.querySelector('.hamburger');
-const navLinks = document.querySelector('.nav-links');
-
-if (hamburger) {
-    hamburger.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
-}
-
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+// Complete scroll effect for FinlytixGrowth
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Get all navbar elements
+    const navbar = document.querySelector('.navbar');
+    const logoText = document.querySelector('.nav-logo h2'); // "Finlytix"
+    const logoReach = document.querySelector('.nav-logo span'); // "Growth"
+    const navLinks = document.querySelectorAll('.nav-links > li > a:not(.nav-cta)');
+    const ctaButton = document.querySelector('.nav-cta');
+    const hamburgerIcon = document.querySelector('.hamburger i');
+    
+    // Function to update navbar colors based on scroll
+    function updateNavbarColors() {
+        if (window.scrollY > 50) {
+            // WHEN SCROLLED - White navbar
+            navbar.style.backgroundColor = '#ffffff';
+            navbar.style.borderBottomColor = '#0066ff';
+            navbar.style.boxShadow = '0 5px 20px rgba(0,0,0,0.1)';
+            
+            // "Finlytix" becomes BLACK
+            logoText.style.color = '#000000';
+            
+            // "Growth" becomes RED
+            if (logoReach) {
+                logoReach.style.color = '#ff3333';
+            }
+            
+            // All navigation links become BLACK
+            navLinks.forEach(link => {
+                link.style.color = '#000000';
             });
-            // Close mobile menu if open
-            if (navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
+            
+            // Hamburger icon becomes BLACK
+            if (hamburgerIcon) {
+                hamburgerIcon.style.color = '#000000';
+            }
+            
+        } else {
+            // AT TOP - Black navbar
+            navbar.style.backgroundColor = '#000000';
+            navbar.style.borderBottomColor = '#0066ff';
+            navbar.style.boxShadow = '0 5px 20px rgba(0,0,0,0.3)';
+            
+            // "Finlytix" becomes WHITE
+            logoText.style.color = '#ffffff';
+            
+            // "Growth" stays RED
+            if (logoReach) {
+                logoReach.style.color = '#ff3333';
+            }
+            
+            // All navigation links become WHITE
+            navLinks.forEach(link => {
+                link.style.color = '#ffffff';
+            });
+            
+            // Hamburger icon becomes WHITE
+            if (hamburgerIcon) {
+                hamburgerIcon.style.color = '#ffffff';
             }
         }
-    });
-});
-
-// Navbar background change on scroll
-window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.backdropFilter = 'blur(10px)';
-    } else {
-        navbar.style.background = 'white';
-        navbar.style.backdropFilter = 'none';
     }
-});
-
-// Add animation on scroll (simple fade-in)
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
-
-document.querySelectorAll('.service-card, .feature, .testimonial-card, .stat-item').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'all 0.6s ease-out';
-    observer.observe(el);
+    
+    // CTA button hover effects (keep consistent)
+    if (ctaButton) {
+        ctaButton.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = 'transparent';
+            this.style.color = '#0066ff';
+        });
+        
+        ctaButton.addEventListener('mouseleave', function() {
+            if (window.scrollY > 50) {
+                this.style.backgroundColor = '#0066ff';
+                this.style.color = '#ffffff';
+            } else {
+                this.style.backgroundColor = '#0066ff';
+                this.style.color = '#ffffff';
+            }
+        });
+    }
+    
+    // Listen for scroll events
+    window.addEventListener('scroll', updateNavbarColors);
+    
+    // Handle mobile menu
+    const hamburger = document.querySelector('.hamburger');
+    const mobileMenu = document.querySelector('.nav-links');
+    
+    if (hamburger) {
+        hamburger.addEventListener('click', function() {
+            mobileMenu.classList.toggle('active');
+            
+            if (mobileMenu.classList.contains('active')) {
+                if (window.scrollY > 50) {
+                    mobileMenu.style.backgroundColor = '#ffffff';
+                    document.querySelectorAll('.nav-links.active a').forEach(link => {
+                        if (!link.classList.contains('nav-cta')) {
+                            link.style.color = '#000000';
+                        }
+                    });
+                } else {
+                    mobileMenu.style.backgroundColor = '#000000';
+                    document.querySelectorAll('.nav-links.active a').forEach(link => {
+                        if (!link.classList.contains('nav-cta')) {
+                            link.style.color = '#ffffff';
+                        }
+                    });
+                }
+            }
+        });
+    }
+    
+    // Initial call
+    updateNavbarColors();
 });
