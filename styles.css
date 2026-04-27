@@ -328,16 +328,18 @@ body {
 }
 
 .cta-note {
-    margin-top: 1rem;
-    font-size: 0.9rem;
+    margin-top: 1rem !important;
+    font-size: 1.5rem;
+    font: bold 1.5rem 'Inter', sans-serif;
 }
 
 .trust-badges {
     display: flex;
     justify-content: center;
-    gap: 2rem;
-    margin-top: 2rem;
+    gap: 1rem;
+    margin-top: 2rem !important;
     flex-wrap: wrap;
+    font: bold 1.5rem 'Inter', sans-serif;
 }
 
 .trust-badges span {
